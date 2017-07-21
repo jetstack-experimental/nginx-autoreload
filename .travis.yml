@@ -1,0 +1,21 @@
+sudo: required
+
+branches:
+  only:
+  - master
+
+env:
+- VERSION: "1.13.1"
+
+services:
+- docker
+
+before_script:
+- docker login -u="${QUAY_USERNAME}" -p="${QUAY_PASSWORD}" quay.io
+
+script:
+- docker build
+    -t quay.io/jetstack/nginx-autoreload:$VERSION
+    -f $VERSION/Dockerfile
+    .
+- docker push quay.io/jetstack/nginx-autoreload:$VERSION
